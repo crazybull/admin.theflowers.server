@@ -51,8 +51,9 @@ app.use('/admin/article',articleRouter);
 //定义错误级别的中间件
 app.use((err,req,res,next)=>{
     //验证失败
-    if(err instanceof joi.ValidationError) return res.cc('身份认证失败',403);//身份认证失败
-    if(err.name==="UnauthorizedError") return res.cc(err);
+    console.log(err);
+    if(err instanceof joi.ValidationError) return res.cc(err.message);//身份认证失败
+    if(err.name==="UnauthorizedError") return res.cc('身份认证失败',403);
     res.cc(err)
 })
 
