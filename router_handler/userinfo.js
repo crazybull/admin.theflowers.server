@@ -1,9 +1,10 @@
 const db=require("../db");
 const bcrypt=require("bcryptjs");//加密
-// 获取用户基本信息
+// 获取用户基信息
 exports.getUserInfo=(req,res)=>{
-    const sqlStr="select id,username,email,status,user_pic from users where id=?";
+    const sqlStr="select id,username,email,status,user_pic,role from users where id=?";
     db.query(sqlStr,req.auth.id,(err,result)=>{
+        console.log(result);
         if(err) return res.cc(err);
         if(result.length!==1) return res.cc("获取用户信息失败");
         res.send({
