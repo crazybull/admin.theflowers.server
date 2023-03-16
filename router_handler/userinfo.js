@@ -2,15 +2,11 @@ const db=require("../db");
 const bcrypt=require("bcryptjs");//加密
 // 获取用户基本信息
 exports.getUserInfo=(req,res)=>{
-    const sqlStr="select id,username,email,status,user_pic from users where id=?";
+    const sqlStr="select id,username,email,status,role,user_pic from users where id=?";
     db.query(sqlStr,req.auth.id,(err,result)=>{
         if(err) return res.cc(err);
         if(result.length!==1) return res.cc("获取用户信息失败");
-        res.send({
-            status:0,
-            message:'获取用户信息成功',
-            data:result[0]
-        })
+        res.success('获取用户信息成功',result[0])
     });
 }
 // 更新用户信息
@@ -19,7 +15,7 @@ exports.updateUserInfo=(req,res)=>{
     db.query(sqlStr,[req.body,req.body.id],(err,result)=>{
         if(err) return res.cc(err);
         if(result.affectedRows!==1) return res.cc("更新用户信息失败");
-        res.cc("更新用户信息成功",0);
+        res.success("更新用户信息成功");
     });
 }
 
@@ -37,7 +33,7 @@ exports.updateUserPwd=(req,res)=>{
         db.query(updateSql,newpwd,(err,result)=>{
             if(err) return res.cc(err)
             if(result.affectedRows!==1) return res.cc("更新用户密码失败");
-            res.cc("更新用户密码成功",0);
+            res.success("更新用户信息成功");
         })
     });
 }
@@ -48,6 +44,6 @@ exports.updateUserAvatar=(req,res)=>{
     db.query(updateSql,userinfo.avatar,(err,result)=>{
         if(err) return res.cc(err);
         if(result.affectedRows!==1) return res.cc("更新用户头像失败");
-        res.cc("更新用户头像成功",0);
+        res.success("更新用户头像成功");
     });
 }

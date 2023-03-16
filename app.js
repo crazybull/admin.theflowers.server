@@ -22,7 +22,7 @@ app.use((req,res,next)=>{
         })
     }
     // @ts-ignore
-    res.success=function(message,data,status=0){
+    res.success=function(message,data=true,status=0){
         res.send({
             status,
             data,
