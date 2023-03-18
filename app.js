@@ -36,11 +36,13 @@ app.use((req,res,next)=>{
 app.use(expressjwt({secret:config.jwtSecretKey, algorithms: ["HS256"] }).unless({path: [/^\/api/]}));//7.x要配置 algorithms: ["HS256"]
 // 导出并使用用户路由模块
 const userRouter=require('./router/user');
-
 // 导出并使用用户信息路由模块
 const userInfoRouter=require('./router/userinfo');
+// 导出并使用菜单路由模块
+const menuRouter=require('./router/menu');
 // @ts-ignore
 app.use('/api',userRouter);
+app.use('/menu',menuRouter);
 app.use('/admin',userInfoRouter);
 const articleCateRouter=require('./router/article_cate');//文章类别
 app.use('/admin/article',articleCateRouter);
@@ -49,12 +51,13 @@ app.use('/admin/article',articleRouter);
 //定义错误级别的中间件
 app.use((err,req,res,next)=>{
     //验证失败
-    if(err instanceof joi.ValidationError) return res.cc('身份认证失败',403);//身份认证失败
-    if(err.name==="UnauthorizedError") return res.cc(err);
+    console.log(err);
+    if(err instanceof joi.ValidationError) return res.cc(err.message);//身份认证失败
+    if(err.name==="UnauthorizedError") return res.cc('身份认证失败',403);
     res.cc(err)
 })
 
 //调用app.listen方法，指定端号口并启动服务器
-app.listen(3007,()=>{
+app.listen(80,()=>{
     console.log('api server is running at 127.0.0.0:3007');
 })
