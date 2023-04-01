@@ -9,6 +9,9 @@ const id=joi.number().integer().min(1).required();
 const nickname=joi.string().required();
 const email=joi.string().email().required();
 const avatar=joi.string().dataUri().required();
+const pageNo=joi.number().integer().min(0);
+const pageSize=joi.number().integer().min(0);
+const keyword=joi.string().allow('').allow(null);
 // 登录和注册
 exports.reg_login_schema={
     body:{
@@ -36,5 +39,13 @@ exports.update_pwd_schema={
 exports.update_avatar_schema={
     body:{
         avatar
+    }
+}
+//获取用户列表
+exports.get_list_schema={
+    body:{
+        pageNo,
+        pageSize,
+        keyword
     }
 }

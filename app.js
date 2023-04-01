@@ -38,11 +38,8 @@ app.use(expressjwt({secret:config.jwtSecretKey, algorithms: ["HS256"] }).unless(
 const userRouter=require('./router/user');
 // 导出并使用用户信息路由模块
 const userInfoRouter=require('./router/userinfo');
-// 导出并使用菜单路由模块
-const menuRouter=require('./router/menu');
 // @ts-ignore
 app.use('/api',userRouter);
-app.use('/menu',menuRouter);
 app.use('/admin',userInfoRouter);
 const articleCateRouter=require('./router/article_cate');//文章类别
 app.use('/admin/article',articleCateRouter);
@@ -58,6 +55,6 @@ app.use((err,req,res,next)=>{
 })
 
 //调用app.listen方法，指定端号口并启动服务器
-app.listen(80,()=>{
+app.listen(3007,()=>{
     console.log('api server is running at 127.0.0.0:3007');
 })

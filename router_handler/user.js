@@ -1,7 +1,7 @@
 const db=require("../db");
 const bcrypt=require("bcryptjs");//加密
 const jwt=require("jsonwebtoken");//jwt
-const config=require("../config")
+const config=require("../config");
 // 注册用户
 exports.regUser=(req,res)=>{
     const userinfo=req.body;

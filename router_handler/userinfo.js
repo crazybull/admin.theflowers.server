@@ -4,7 +4,6 @@ const bcrypt=require("bcryptjs");//加密
 exports.getUserInfo=(req,res)=>{
 const sqlStr="select id,username,email,status,user_pic,role from users where id=?";
     db.query(sqlStr,req.auth.id,(err,result)=>{
-        console.log(result);
         if(err) return res.cc(err);
         if(result.length!==1) return res.cc("获取用户信息失败");
         res.success('获取用户信息成功',result[0])
@@ -48,3 +47,24 @@ exports.updateUserAvatar=(req,res)=>{
         res.success("更新用户头像成功");
     });
 }
+// 获取用户列表
+
+exports.getUserList=(req,res)=>{
+    const userinfo=req.body;
+    let {pageNo,pageSize,keyword}=userinfo;
+    keyword=keyword?keyword:"";
+    const sqlStr=`select id,username,email,status,user_pic,role from users where is_del=0 and username like '%${keyword}%' limit ?,?`;
+    console.log(userinfo);
+    //pageSize=parseInt(pageSize)||10;
+    pageNo =( parseInt(pageNo) )* pageSize || 0;
+    console.log(userinfo);
+    db.query(sqlStr,[pageNo,pageSize],(err,result)=>{
+        if(err) return res.cc(err);
+        let sql = `SELECT COUNT(id) as total FROM users;`
+        db.query(sql, [], (err, resultCount) => {
+            let total = resultCount[0]['total'];
+            res.success('获取用户列表成功',{total,list:result})
+        })
+    });
+}
+
