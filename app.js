@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express=require('express');//导入express模块
+const bodyParser = require('body-parser');
 const cors=require('cors');
 const joi=require("joi");
 const {expressjwt}=require("express-jwt");//7,x以后要解构出expressjwt才能用
@@ -10,6 +11,7 @@ const app=express();
 // 配置跨域中间件
 app.use(cors());
 // 配置解析表单数据中间件
+app.use(express.json());
 app.use(express.urlencoded({extended:false}));
  
 //一定要在路由之前，挂载错误提示函数cc
@@ -42,7 +44,7 @@ const userInfoRouter=require('./router/userinfo');
 app.use('/api',userRouter);
 app.use('/admin',userInfoRouter);
 const articleCateRouter=require('./router/article_cate');//文章类别
-app.use('/admin/article',articleCateRouter);
+app.use('/admin/article_cate',articleCateRouter);
 const articleRouter=require('./router/article');//文章
 app.use('/admin/article',articleRouter);
 //定义错误级别的中间件

@@ -5,10 +5,15 @@ const password=joi
 .string()
 .pattern(/^[\S]{3,12}$/)
 .required();
-const id=joi.number().integer().min(1).required();
-const nickname=joi.string().required();
-const email=joi.string().email().required();
-const avatar=joi.string().dataUri().required();
+const id=joi.number().required();
+const nickname=joi.string();
+const sex=joi.string();
+const introduction=joi.string().max(100);
+const province=joi.string();
+const city=joi.string();
+const addr=joi.string();
+const email=joi.string().email();
+const user_pic=joi.string().dataUri();
 const pageNo=joi.number().integer().min(0);
 const pageSize=joi.number().integer().min(0);
 const keyword=joi.string().allow('').allow(null);
@@ -24,7 +29,12 @@ exports.update_userinfo_schema={
     body:{
         id,
         nickname,
-        email
+        email,
+        sex,
+        introduction,
+        province,
+        city,
+        addr
     }
 }
 // 更新密码
@@ -38,7 +48,8 @@ exports.update_pwd_schema={
 //更新头像
 exports.update_avatar_schema={
     body:{
-        avatar
+        id,
+        user_pic
     }
 }
 //获取用户列表
@@ -47,5 +58,11 @@ exports.get_list_schema={
         pageNo,
         pageSize,
         keyword
+    }
+}
+// 通过用户id获取用户信息
+exports.get_userinfo_byid_schema={
+    body:{
+        id
     }
 }

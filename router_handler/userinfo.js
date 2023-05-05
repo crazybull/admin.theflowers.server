@@ -37,27 +37,24 @@ exports.updateUserPwd=(req,res)=>{
         })
     });
 }
-// 更新用户信息
+// 更新用户头像
 exports.updateUserAvatar=(req,res)=>{
     const userinfo=req.body;
-    const updateSql=`update users set user_pic=? where id=${req.auth.id}`;
-    db.query(updateSql,userinfo.avatar,(err,result)=>{
+    const updateSql=`update users set user_pic=? where id=?`;
+    db.query(updateSql,[userinfo.user_pic,userinfo.id],(err,result)=>{
+        console.log(result);
         if(err) return res.cc(err);
         if(result.affectedRows!==1) return res.cc("更新用户头像失败");
         res.success("更新用户头像成功");
     });
 }
 // 获取用户列表
-
 exports.getUserList=(req,res)=>{
     const userinfo=req.body;
     let {pageNo,pageSize,keyword}=userinfo;
     keyword=keyword?keyword:"";
-    const sqlStr=`select id,username,email,status,user_pic,role from users where is_del=0 and username like '%${keyword}%' limit ?,?`;
-    console.log(userinfo);
-    //pageSize=parseInt(pageSize)||10;
+    const sqlStr=`select id,username,email,status,user_pic,role,nickname from users where is_del=0 and username like '%${keyword}%' limit ?,?`;
     pageNo =( parseInt(pageNo) )* pageSize || 0;
-    console.log(userinfo);
     db.query(sqlStr,[pageNo,pageSize],(err,result)=>{
         if(err) return res.cc(err);
         let sql = `SELECT COUNT(id) as total FROM users;`
@@ -68,3 +65,14 @@ exports.getUserList=(req,res)=>{
     });
 }
 
+// 获取用户基信息
+exports.getUserInfoById=(req,res)=>{
+    const sqlStr="select id,username,nickname,email,status,user_pic,role,sex,introduction,country,city,province,addr from users where id=?";
+    const userinfo=req.body;
+    let {id}=userinfo;
+    db.query(sqlStr,id,(err,result)=>{
+        if(err) return res.cc(err);
+        if(result.length!==1) return res.cc("获取用户信息失败");
+        res.success('获取用户信息成功',result[0])
+    });
+}

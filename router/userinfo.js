@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 const userInfo_Handle=require("../router_handler/userinfo");
 const expressJoi=require("@escook/express-joi");//验证规则中间件
-const {update_userinfo_schema,update_pwd_schema,update_avatar_schema,get_list_schema}=require("../schema/user")
+const {update_userinfo_schema,update_pwd_schema,update_avatar_schema,get_list_schema,get_userinfo_byid_schema}=require("../schema/user")
 //获取用户信息
 router.get('/userinfo',userInfo_Handle.getUserInfo);
 //更新用户信息
@@ -13,5 +13,6 @@ router.post('/updatePwd',expressJoi(update_pwd_schema),userInfo_Handle.updateUse
 router.post('/updateAvatar',expressJoi(update_avatar_schema),userInfo_Handle.updateUserAvatar);
 //获取所有用户
 router.post('/user/list',expressJoi(get_list_schema),userInfo_Handle.getUserList);
-
+//获取单个用户信息通过id
+router.post('/get_user_byid',expressJoi(get_userinfo_byid_schema),userInfo_Handle.getUserInfoById);
 module.exports=router;
